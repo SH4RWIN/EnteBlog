@@ -1,0 +1,547 @@
+/* General Styles & Typography */
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #FFFFFF; /* White */
+    color: #242424; /* Near Black */
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Header Navigation */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #242424;
+}
+
+body.dark-mode .logo {
+    color: #f0f0f0;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+}
+
+.header-nav a {
+    margin-left: 1.5rem;
+    text-decoration: none;
+    color: #6b6b6b;
+}
+
+/* Buttons */
+.button {
+    display: inline-block;
+    background-color: #242424; /* Near Black */
+    color: #FFFFFF;
+    padding: 0.6rem 1.2rem;
+    text-decoration: none;
+    border-radius: 999px; /* Pill shape */
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.button:hover {
+    background-color: #000000;
+}
+
+.button.button-primary {
+    background-color: #242424; /* Near Black */
+    color: #FFFFFF;
+}
+
+.button.button-primary:hover {
+    background-color: #000000; /* Darker Black */
+}
+
+/* Dashboard Post List */
+.post-list-item {
+    padding: 2rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.post-meta-info {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #6b6b6b;
+    margin-bottom: 0.5rem;
+}
+
+.post-list-item h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.post-list-item h2 a {
+    text-decoration: none;
+    color: #242424;
+}
+
+.post-snippet {
+    color: #6b6b6b;
+    margin-bottom: 1rem;
+}
+
+/* Viewer Page */
+.post-viewer-header {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.post-viewer-header h1 {
+    font-size: 2.5rem;
+    margin: 0 0 1rem 0;
+}
+
+.post-viewer-header .post-meta-info {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically on mobile */
+    align-items: flex-start;
+    font-size: 0.9rem;
+    color: #6b6b6b;
+    margin-top: 1rem;
+}
+
+.post-viewer-header .author-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.post-viewer-header .author-info span {
+    font-weight: 600;
+    color: #242424;
+}
+
+body.dark-mode .post-viewer-header .author-info span {
+    color: #f0f0f0;
+}
+
+.post-viewer-header .post-details {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.post-viewer-header .post-details span:not(:last-child)::after {
+    content: "·";
+    margin: 0 0.5rem;
+}
+
+/* Responsive adjustments for meta-info */
+@media (min-width: 768px) {
+    .post-viewer-header .post-meta-info {
+        flex-direction: row; /* Horizontal layout on larger screens */
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .post-viewer-header .author-info {
+        margin-bottom: 0;
+    }
+}
+
+/* Markdown Content Styling */
+#post-content-html {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+#post-content-html h2, #post-content-html h3 {
+    margin-top: 2em;
+}
+
+#post-content-html a {
+    color: #242424;
+    text-decoration: underline;
+}
+
+#post-content-html blockquote {
+    margin: 1.5em 0;
+    padding-left: 1.5em;
+    border-left: 3px solid #242424;
+    font-style: italic;
+    color: #6b6b6b;
+}
+
+#post-content-html pre code {
+    background-color: transparent;
+    padding: 0;
+}
+
+#post-content-html table {
+    width: 100%;
+    display: block; /* Make table a block element to apply overflow */
+    overflow-x: auto; /* Enable horizontal scrolling for wide tables */
+    border-collapse: collapse;
+    margin: 1.5em 0;
+}
+
+#post-content-html th,
+#post-content-html td {
+    border-bottom: 1px solid #CDCBD6; /* Lavender Gray */
+    padding: 0.8em 1em;
+    text-align: left;
+}
+
+#post-content-html th:not(:last-child),
+#post-content-html td:not(:last-child) {
+    border-right: 1px solid #CDCBD6; /* Lavender Gray */
+}
+
+#post-content-html th {
+    background-color: #f8f8f8;
+    font-weight: 600;
+}
+
+#post-content-html hr {
+    border: none;
+    border-top: 1px solid #CDCBD6; /* Lavender Gray */
+    margin: 2em 0;
+}
+
+/* Editor Page */
+.editor-container {
+    max-width: 740px;
+    margin: 2rem auto;
+    padding: 2rem;
+}
+
+body.dark-mode #blog-form textarea#title {
+    background-color: #242424;
+    color: #f0f0f0;
+}
+
+#blog-form textarea#title {
+    border: none;
+    padding: 0.5rem 0;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    width: 100%;
+    box-sizing: border-box;
+    resize: none; /* Prevent manual resizing */
+    overflow: hidden; /* Hide scrollbar */
+}
+
+#blog-form textarea#title:focus {
+    outline: none;
+}
+
+#blog-form input[type="email"],
+#blog-form select {
+    width: 100%;
+    border: 1px solid #f0f0f0;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+#blog-form input[type="email"]:focus,
+#blog-form select:focus {
+    outline: none;
+    border-color: #D96846;
+}
+
+.editor-meta-group {
+    margin-bottom: 1rem;
+}
+
+.editor-meta-group label {
+    display: block;
+    font-size: 0.9rem;
+    color: #6b6b6b;
+    margin-bottom: 0.5rem;
+}
+
+.editor-meta-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #6b6b6b;
+    margin-top: 1rem;
+}
+
+.EasyMDEContainer {
+    border: none !important;
+}
+
+.editor-toolbar {
+    border: none !important;
+}
+
+.CodeMirror {
+    border: none !important;
+    font-size: 1.1rem !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    html {
+        font-size: 15px; /* Scale down all rem units */
+    }
+    .container, .main-header {
+        padding: 1rem;
+    }
+    .post-viewer-header h1 {
+        font-size: 2rem;
+    }
+    #post-content-html {
+        font-size: 1rem; /* Adjust content font size */
+    }
+    .post-list-item h2 {
+        font-size: 1.3rem; /* Adjust dashboard titles */
+    }
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    cursor: pointer;
+    margin-left: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: transparent;
+    border: none;
+    color: #6b6b6b; /* Default icon color */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: #f0f0f0;
+}
+
+.theme-toggle svg {
+    width: 24px;
+    height: 24px;
+}
+
+.theme-toggle .moon {
+    display: none; /* Hide moon by default */
+}
+
+/* Dark Mode Styles for Toggle */
+body.dark-mode .theme-toggle {
+    color: #f0f0f0; /* Dark mode icon color */
+}
+
+body.dark-mode .theme-toggle:hover {
+    background-color: #333;
+}
+
+body.dark-mode .theme-toggle .sun {
+    display: none; /* Hide sun in dark mode */
+}
+
+body.dark-mode .theme-toggle .moon {
+    display: block; /* Show moon in dark mode */
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #242424; /* Near Black */
+    color: #f0f0f0; /* Light Gray */
+}
+
+body.dark-mode .main-header {
+    border-bottom-color: #333;
+}
+
+body.dark-mode .logo {
+    color: #f0f0f0;
+}
+
+body.dark-mode .header-nav a {
+    color: #ccc;
+}
+
+body.dark-mode .button {
+    background-color: #f0f0f0;
+    color: #242424;
+}
+
+body.dark-mode .button:hover {
+    background-color: #fff;
+}
+
+body.dark-mode .button.button-primary {
+    background-color: #f0f0f0;
+    color: #242424;
+}
+
+body.dark-mode .button.button-primary:hover {
+    background-color: #fff;
+}
+
+body.dark-mode .post-list-item {
+    border-bottom-color: #333;
+}
+
+body.dark-mode .post-meta-info {
+    color: #ccc;
+}
+
+body.dark-mode .post-list-item h2 a {
+    color: #f0f0f0;
+}
+
+body.dark-mode .post-snippet {
+    color: #ccc;
+}
+
+body.dark-mode .post-viewer-header {
+    border-bottom-color: #333;
+}
+
+body.dark-mode #post-content-html a {
+    color: #f0f0f0;
+}
+
+body.dark-mode #post-content-html blockquote {
+    border-left-color: #f0f0f0;
+    color: #ccc;
+}
+
+body.dark-mode #post-content-html th,
+body.dark-mode #post-content-html td {
+    border-bottom-color: #555;
+    border-right-color: #555;
+}
+
+body.dark-mode #post-content-html th {
+    background-color: #333;
+}
+
+body.dark-mode #post-content-html hr {
+    border-top-color: #555;
+}
+
+body.dark-mode #blog-form input[type="text"],
+body.dark-mode #blog-form input[type="email"],
+body.dark-mode #blog-form select {
+    background-color: #333;
+    color: #f0f0f0;
+    border-color: #555;
+}
+
+body.dark-mode #blog-form input:focus,
+body.dark-mode #blog-form select:focus {
+    border-color: #2196F3;
+}
+
+body.dark-mode .editor-meta-group label {
+    color: #ccc;
+}
+
+body.dark-mode .editor-meta-info {
+    color: #ccc;
+}
+
+body.dark-mode .CodeMirror-sizer, 
+body.dark-mode .CodeMirror-lines {
+    background-color: #242424 !important;
+}
+
+body.dark-mode .CodeMirror {
+    background-color: #242424 !important;
+    color: #f0f0f0 !important;
+}
+
+body.dark-mode .CodeMirror-gutters {
+    background-color: #333 !important;
+    border-right: 1px solid #555 !important;
+}
+
+body.dark-mode .CodeMirror-selectedtext {
+    background-color: #f0f0f0 !important; /* White background for selected text in dark mode */
+    color: #242424 !important; /* Black text for selected text in dark mode */
+}
+
+body.dark-mode .CodeMirror-focused .CodeMirror-selected {
+    background-color: #f0f0f0 !important; /* White background for selection in dark mode when focused */
+}
+
+body.dark-mode .CodeMirror-selected {
+    background-color: #f0f0f0 !important; /* White background for selection in dark mode */
+}
+
+/* CodeMirror Cursor Styling */
+.CodeMirror-cursor {
+    border-left: 1px solid #242424; /* Black cursor for light mode */
+}
+
+body.dark-mode .CodeMirror-cursor {
+    border-left: 1px solid #f0f0f0; /* White cursor for dark mode */
+}
+
+.editor-toolbar button {
+    margin-right: 5px; /* Add space between buttons */
+}
+
+.editor-toolbar .separator {
+    border-right: 1px solid #ccc; /* Light mode separator */
+    margin: 0 5px; /* Adjust separator spacing */
+}
+
+body.dark-mode .editor-toolbar .separator {
+    border-right: 1px solid #555; /* Dark mode separator */
+}
+
+body.dark-mode .editor-toolbar button {
+    background-color: transparent !important; /* Remove background in dark mode */
+    color: #f0f0f0 !important;
+    border: 1px solid transparent; /* Default transparent border */
+}
+
+body.dark-mode .editor-toolbar button:hover {
+    background-color: transparent !important;
+    border: 1px solid #f0f0f0 !important; /* White border on hover in dark mode */
+    color: #f0f0f0 !important;
+}
+
+body.dark-mode .editor-toolbar button.active {
+    background-color: transparent !important;
+    border: 1px solid #f0f0f0 !important; /* White border when active in dark mode */
+    color: #f0f0f0 !important;
+}
+
+/* EasyMDE Preview Styling */
+.editor-preview {
+    background-color: #FFFFFF; /* White background for light mode preview */
+    color: #242424; /* Near Black text for light mode preview */
+}
+
+body.dark-mode .editor-preview {
+    background-color: #242424; /* Dark background for dark mode preview */
+    color: #f0f0f0; /* Light Gray text for dark mode preview */
+}

@@ -14,7 +14,7 @@ fs.mkdir(POSTS_DIR, { recursive: true });
 fs.mkdir(BIN_DIR, { recursive: true });
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../frontend')));
+app.use(express.static(path.join(__dirname, '../frontend/public')));
 
 // Serve specific HTML files for clean URLs
 app.get('/dashboard', (req, res) => {
@@ -93,7 +93,7 @@ app.get('/api/posts/:id', async (req, res) => {
 
 // POST /api/posts - Create a new post
 app.post('/api/posts', async (req, res) => {
-    const { title, content, author, email, fontFamily, fontSize } = req.body;
+    const { title, content, author, email } = req.body;
     if (!title || !content || !author || !email) {
         return res.status(400).json({ message: "Title, content, author, and email are required." });
     }
@@ -112,8 +112,6 @@ app.post('/api/posts', async (req, res) => {
             author,
             email,
             timestamp: new Date().toISOString(),
-            fontFamily: fontFamily || 'inherit',
-            fontSize: fontSize || '1em',
         };
         await fs.writeFile(path.join(postPath, 'details.json'), JSON.stringify(details, null, 2));
         await fs.writeFile(path.join(postPath, 'content.md'), content);
@@ -124,7 +122,7 @@ app.post('/api/posts', async (req, res) => {
 // PUT /api/posts/:id - Update a post
 app.put('/api/posts/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, content, author, email, fontFamily, fontSize } = req.body;
+    const { title, content, author, email } = req.body;
     const oldPostPath = path.join(POSTS_DIR, id);
 
     try {
@@ -146,8 +144,6 @@ app.put('/api/posts/:id', async (req, res) => {
             author,
             email,
             timestamp: new Date().toISOString(), // This is now the "last edited" time
-            fontFamily: fontFamily || 'inherit',
-            fontSize: fontSize || '1em',
         };
         await fs.writeFile(path.join(newPostPath, 'details.json'), JSON.stringify(details, null, 2));
         await fs.writeFile(path.join(newPostPath, 'content.md'), content);

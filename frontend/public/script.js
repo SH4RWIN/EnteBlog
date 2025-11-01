@@ -4,16 +4,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const postTitle = document.getElementById('post-title');
     const postContentHtml = document.getElementById('post-content-html'); // For rendered HTML
     const searchBar = document.getElementById('search-bar');
+    const themeToggle = document.getElementById('theme-toggle');
 
     let allPosts = [];
 
-    const fontSizeMap = {
-        'Very Small': '0.8em',
-        'Small': '1em',
-        'Medium': '1.2em',
-        'Large': '1.5em',
-        'Very Large': '2em',
+    // Theme switching logic
+    const enableDarkMode = () => {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
     };
+
+    const disableDarkMode = () => {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+    };
+
+    if (themeToggle) {
+        // Set initial theme based on localStorage
+        if (localStorage.getItem('theme') === 'dark') {
+            enableDarkMode();
+        } else {
+            disableDarkMode();
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (document.body.classList.contains('dark-mode')) {
+                disableDarkMode();
+            } else {
+                enableDarkMode();
+            }
+        });
+    }
 
     const displayDashboardPosts = (filter = '') => {
         if (!blogPostsContainer) return;
@@ -35,10 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span style="margin: 0 0.5rem;">·</span>
                     <span>${postDate}</span>
                 </div>
-                <h2><a href="viewer.html?id=${post.id}">${post.title}</a></h2>
+                <h2><a href="/viewer?id=${post.id}">${post.title}</a></h2>
                 <p class="post-snippet">${snippet}</p>
                 <div class="button-group">
-                    <a href="editor.html?id=${post.id}" style="font-size: 0.9rem; color: #6b6b6b; text-decoration: none;">Edit</a>
+                    <a href="/editor?id=${post.id}" style="font-size: 0.9rem; color: #6b6b6b; text-decoration: none;">Edit</a>
                     <a href="#" class="delete-button" data-id="${post.id}" style="font-size: 0.9rem; color: #c94a4a; text-decoration: none; margin-left: 1rem;">Delete</a>
                 </div>
             `;
@@ -89,21 +110,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const md = window.markdownit();
                 postContentHtml.innerHTML = md.render(post.content);
 
-                // Apply font styles
-                if (post.fontFamily) {
-                    postContentHtml.style.fontFamily = post.fontFamily;
-                }
-                if (post.fontSize && fontSizeMap[post.fontSize]) {
-                    postContentHtml.style.fontSize = fontSizeMap[post.fontSize];
-                }
+
 
                 // Display metadata
-                document.getElementById('post-author').textContent = `By: ${post.author}`;
-                document.getElementById('post-email').textContent = `Email: ${post.email}`;
+                document.getElementById('post-author').textContent = post.author;
+                const wordsPerMinute = 200; // Average reading speed
+                const wordCount = post.content.trim().split(/\s+/).filter(Boolean).length;
+                const readingTime = Math.ceil(wordCount / wordsPerMinute);
+                document.getElementById('post-reading-time').textContent = `${readingTime} min read`;
+
                 const postTimestamp = document.getElementById('post-timestamp');
                 if (postTimestamp) {
-                    const date = new Date(post.timestamp).toLocaleString();
-                    postTimestamp.textContent = `Last updated: ${date}`;
+                    const date = new Date(post.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    postTimestamp.textContent = date;
                 }
             } catch (error) {
                 postTitle.textContent = "Error";
@@ -120,32 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('reading-time').textContent = `Reading time: ${readingTime} min`;
     };
 
-    const populateFontDropdowns = async () => {
-        const fontFamilySelect = document.getElementById('font-family');
-        const fontSizeSelect = document.getElementById('font-size');
-
-        // Populate font sizes with descriptive terms
-        const fontSizes = Object.keys(fontSizeMap);
-
-        fontSizes.forEach(sizeText => {
-            const option = document.createElement('option');
-            option.value = sizeText;
-            option.textContent = sizeText;
-            fontSizeSelect.appendChild(option);
-        });
-
-        // Fetch and populate font families
-        try {
-            const response = await fetch('/api/settings/fonts');
-            const fonts = await response.json();
-            fonts.forEach(font => {
-                const option = document.createElement('option');
-                option.value = font;
-                option.textContent = font;
-                fontFamilySelect.appendChild(option);
-            });
-        } catch (error) {
-            console.error('Failed to load fonts:', error);
+    const autoExpandTitle = () => {
+        const titleTextarea = document.getElementById('title');
+        if (titleTextarea) {
+            titleTextarea.style.height = 'auto';
+            titleTextarea.style.height = titleTextarea.scrollHeight + 'px';
         }
     };
 
@@ -161,7 +159,10 @@ document.addEventListener('DOMContentLoaded', () => {
             minHeight: "300px",
         });
 
-        populateFontDropdowns(); // Call the new function
+        const titleTextarea = document.getElementById('title');
+        if (titleTextarea) {
+            titleTextarea.addEventListener('input', autoExpandTitle);
+        }
 
         const urlParams = new URLSearchParams(window.location.search);
         const postId = urlParams.get('id');
@@ -174,13 +175,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('author').value = post.author;
                     document.getElementById('email').value = post.email;
                     easyMDE.value(post.content); // Use EasyMDE's method to set content
-                    // Set dropdown values after a short delay to ensure options are populated
-                    setTimeout(() => {
-                        document.getElementById('font-family').value = post.fontFamily || '';
-                        document.getElementById('font-size').value = post.fontSize || '';
-                    }, 100);
+
                     updateEditorMeta(post.content);
+                    autoExpandTitle(); // Expand title on load
                 });
+        } else {
+            autoExpandTitle(); // Expand title for new posts
         }
 
         // Update word count on editor changes
@@ -193,8 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const content = easyMDE.value(); // Get content from EasyMDE instance
             const author = document.getElementById('author').value;
             const email = document.getElementById('email').value;
-            const fontFamily = document.getElementById('font-family').value;
-            const fontSize = document.getElementById('font-size').value;
             
             const urlParams = new URLSearchParams(window.location.search);
             const postId = urlParams.get('id');
@@ -204,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(url, {
                 method: method,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, content, author, email, fontFamily, fontSize }),
+                body: JSON.stringify({ title, content, author, email }),
             });
 
             if (response.ok) {
