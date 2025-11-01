@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <a href="/dashboard" class="logo">MyBlog</a>
+        <nav class="header-nav">
+            <button type="button" id="save-post-button" class="button">Publish</button>
+        </nav>
+    </header>
+    <main class="editor-container">
+        <form id="blog-form">
+            <input type="text" id="title" placeholder="Title" required>
+            <textarea id="content" required></textarea>
+            
+            <!-- Hidden fields for other data -->
+            <input type="hidden" id="author" value="Default Author">
+            <input type="hidden" id="email" value="author@example.com">
+            <input type="hidden" id="font-family" value="">
+            <input type="hidden" id="font-size" value="">
+        </form>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
