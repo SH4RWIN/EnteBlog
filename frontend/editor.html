@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editor</title>
     <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/flash-message.css">
     <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
     <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 </head>
 <body>
     <header class="main-header">
-        <a href="/dashboard" class="logo">Verbius</a>
+        <a href="/blogs" class="logo">Verbius</a>
         <nav class="header-nav">
+            <a href="/blogs" class="button">Back to Blogs</a>
             <button type="button" id="save-post-button" class="button">Publish</button>
             <div id="theme-toggle" class="theme-toggle">
                 <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path></svg>
@@ -32,8 +34,8 @@
                 <span id="word-count">Words: 0</span>
                 <span id="reading-time">Reading time: 0 min</span>
             </div>
-        </form>
-    </main>
-    <script src="/script.js"></script>
+    <script src="/flash-message.js"></script>
+    <script src="/flash-message.js" defer></script>
+    <script src="/script.js" defer></script>
 </body>
 </html>

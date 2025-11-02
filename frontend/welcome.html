@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Post</title>
+    <title>Welcome to Verbius</title>
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/flash-message.css">
-    <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
 </head>
 <body>
     <header class="main-header">
         <a href="/welcome" class="logo">Verbius</a>
         <nav class="header-nav">
-            <a href="/blogs" class="button">Back to Blogs</a>
             <a href="/editor" class="button button-primary">New Post</a>
             <div id="theme-toggle" class="theme-toggle">
                 <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path></svg>
@@ -20,23 +18,13 @@
             </div>
         </nav>
     </header>
-    <main class="container">
-        <article>
-            <header class="post-viewer-header">
-                <h1 id="post-title"></h1>
-                <div class="post-meta-info">
-                    <div class="author-info">
-                        <span id="post-author"></span>
-                        <!-- Follow button placeholder -->
-                    </div>
-                    <div class="post-details">
-                        <span id="post-reading-time"></span>
-                        <span id="post-timestamp"></span>
-                    </div>
-                </div>
-            </header>
-            <section id="post-content-html"></section>
-        </article>
+    <main class="container welcome-container">
+        <h1 class="welcome-title">Welcome to Verbius</h1>
+        <p class="welcome-message">Your personal space for thoughts, stories, and ideas. Explore a world of content or start crafting your own.</p>
+        <div class="welcome-actions">
+            <a href="/blogs" class="button button-primary">Explore Blogs</a>
+            <a href="/editor" class="button">Start Writing</a>
+        </div>
     </main>
     <script src="/flash-message.js" defer></script>
     <script src="/script.js" defer></script>

@@ -36,6 +36,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Debounce utility to limit function calls
+    const debounce = (func, delay) => {
+        let timeout;
+        return function(...args) {
+            const context = this;
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(context, args), delay);
+        };
+    };
+
+    // Get sort controls and attach listeners
+    const sortBySelect = document.getElementById('sort-by');
+    const sortOrderSelect = document.getElementById('sort-order');
+
+    const sortPosts = () => {
+        if (!allPosts || allPosts.length === 0) return;
+
+        const sortBy = sortBySelect ? sortBySelect.value : 'timestamp';
+        const sortOrder = sortOrderSelect ? sortOrderSelect.value : 'desc';
+
+        allPosts.sort((a, b) => {
+            let valA, valB;
+
+            if (sortBy === 'title') {
+                valA = a.title.toLowerCase();
+                valB = b.title.toLowerCase();
+                if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
+                if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
+                return 0;
+            } else if (sortBy === 'timestamp') {
+                valA = new Date(a.timestamp).getTime();
+                valB = new Date(b.timestamp).getTime();
+                return sortOrder === 'asc' ? valA - valB : valB - valA;
+            }
+            return 0;
+        });
+        displayDashboardPosts(searchBar ? searchBar.value : '');
+    };
+
+    if (sortBySelect) {
+        sortBySelect.addEventListener('change', sortPosts);
+    }
+    if (sortOrderSelect) {
+        sortOrderSelect.addEventListener('change', sortPosts);
+    }
+
     const displayDashboardPosts = (filter = '') => {
         if (!blogPostsContainer) return;
         blogPostsContainer.innerHTML = '';
@@ -66,31 +112,35 @@ document.addEventListener('DOMContentLoaded', () => {
             blogPostsContainer.appendChild(postElement);
         });
 
-        document.querySelectorAll('.delete-button').forEach(button => {
-            button.addEventListener('click', async (e) => {
-                e.preventDefault();
-                const postId = e.target.getAttribute('data-id');
-                if (confirm('Are you sure you want to move this post to the bin?')) {
-                    const response = await fetch(`/api/posts/${postId}`, { method: 'DELETE' });
-                    if (response.ok) {
-                        fetchAndDisplayPosts();
-                    } else {
-                        alert('Failed to delete post.');
-                    }
-                }
-            });
-        });
+        // Event delegation for delete buttons
+        blogPostsContainer.removeEventListener('click', handleDeleteButtonClick); // Remove old listener if exists
+        blogPostsContainer.addEventListener('click', handleDeleteButtonClick);
+    };
+
+    const handleDeleteButtonClick = async (e) => {
+        if (e.target.classList.contains('delete-button')) {
+            e.preventDefault();
+            const postId = e.target.getAttribute('data-id');
+            const response = await fetch(`/api/posts/${postId}`, { method: 'DELETE' });
+            if (response.ok) {
+                fetchAndDisplayPosts();
+                showFlashMessage('Post moved to bin successfully.', 'success');
+            } else {
+                showFlashMessage('Failed to delete post.', 'error');
+            }
+        }
     };
 
     const fetchAndDisplayPosts = async () => {
         try {
             const response = await fetch('/api/posts');
             allPosts = await response.json();
-            displayDashboardPosts(searchBar ? searchBar.value : '');
+            sortPosts(); // Sort posts after fetching
         } catch (error) {
             console.error("Failed to fetch posts:", error);
             if (blogPostsContainer) {
                 blogPostsContainer.innerHTML = '<p>Could not load posts. Is the server running?</p>';
+                showFlashMessage('Could not load posts. Is the server running?', 'error');
             }
         }
     };
@@ -127,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (error) {
                 postTitle.textContent = "Error";
                 postContentHtml.innerHTML = "<p>Could not find the requested post.</p>";
+                showFlashMessage('Could not find the requested post.', 'error');
             }
         }
     };
@@ -183,9 +234,10 @@ document.addEventListener('DOMContentLoaded', () => {
             autoExpandTitle(); // Expand title for new posts
         }
 
-        // Update word count on editor changes
+        // Update word count on editor changes (debounced)
+        const debouncedUpdateEditorMeta = debounce(updateEditorMeta, 300); // Debounce by 300ms
         easyMDE.codemirror.on("change", () => {
-            updateEditorMeta(easyMDE.value());
+            debouncedUpdateEditorMeta(easyMDE.value());
         });
 
         document.getElementById('save-post-button').addEventListener('click', async () => {
@@ -206,10 +258,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (response.ok) {
-                window.location.href = '/dashboard';
+                const responseData = await response.json();
+                const newPostId = responseData.id; // Assuming the backend returns the new post ID
+                window.location.href = `/viewer?id=${newPostId}`;
             } else {
                 const error = await response.json();
-                alert(`Error: ${error.message}`);
+                showFlashMessage(`Error: ${error.message}`, 'error');
             }
         });
     }
@@ -225,4 +279,52 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchAndDisplayPosts();
     }
     displayPost();
+
+    // Fetch and display flash messages from the backend
+    const fetchFlashMessages = async () => {
+        try {
+            const response = await fetch('/api/flash-messages');
+            if (response.ok) {
+                const flash = await response.json();
+                if (flash && flash.message) {
+                    showFlashMessage(flash.message, flash.type);
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching flash messages:', error);
+        }
+    };
+
+    fetchFlashMessages();
+
+    // Handle subscription form submission
+    const subscriptionForm = document.getElementById('subscription-form');
+
+    if (subscriptionForm) {
+        subscriptionForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('email-subscribe');
+            const email = emailInput.value;
+
+            try {
+                const response = await fetch('/api/subscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showFlashMessage(result.message, 'success');
+                    emailInput.value = ''; // Clear the input field
+                } else {
+                    showFlashMessage(result.message || 'Subscription failed.', 'error');
+                }
+            } catch (error) {
+                console.error('Error subscribing:', error);
+                showFlashMessage('An error occurred. Please try again.', 'error');
+            }
+        });
+    }
 });

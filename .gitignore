@@ -5,6 +5,9 @@ node_modules/
 *.log
 logs/
 
+# Temportary files
+Temp/
+
 # Environment variables
 .env
 .env.local

@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogs</title>
+    <title>Blogs</title>
+    <style>
 /* General Styles & Typography */
 html {
     font-size: 16px;
@@ -805,44 +813,8 @@ body.dark-mode .welcome-title {
     line-height: 1.8;
 }
 
-body.dark-mode .welcome-actions .button {
-    width: 80%;
-    margin: 0 auto;
-}
-
-.editor-meta-fields {
-    display: flex;
-    align-items: center;
-    margin-left: auto; /* Push to the right */
-    gap: 0.25rem; /* Reduce gap for tighter alignment */
-}
-
-.editor-meta-fields input[type="text"],
-.editor-meta-fields input[type="email"] {
-    border: none;
-    padding: 0.2rem 0.2rem;
-    font-size: 0.9rem;
-    max-width: 150px; /* Control width */
-    background-color: transparent; /* No background */
-    color: #242424; /* Default text color */
-    text-align: right; /* Align text to the right */
-}
-
-body.dark-mode .editor-meta-fields input[type="text"],
-body.dark-mode .editor-meta-fields input[type="email"] {
-    color: #f0f0f0; /* Dark mode text color */
-    background-color: transparent;
-}
-
-.editor-meta-fields input[type="text"]:focus,
-.editor-meta-fields input[type="email"]:focus {
-    outline: none;
-}
-
-.editor-meta-fields .separator {
-    font-size: 0.9rem;
-    color: #6b6b6b;
-    margin: 0 0.1rem; /* Further reduce margin for tighter pipe */
+body.dark-mode .welcome-message {
+    color: #ccc;
 }
 
 .welcome-actions {
@@ -880,4 +852,61 @@ body.dark-mode .editor-meta-fields input[type="email"] {
         margin: 0 auto;
     }
 }
+</style>
 
+<body>
+    <header class="main-header">
+        <a href="/welcome" class="logo">Verbius</a>
+        <nav class="header-nav">
+            <a href="/editor" class="button button-primary">New Post</a>
+            <div class="sort-controls">
+                <label for="sort-by">Sort By:</label>
+                <select id="sort-by">
+                    <option value="timestamp">Date</option>
+                    <option value="title">Title</option>
+                </select>
+                <label for="sort-order">Order:</label>
+                <select id="sort-order">
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                </select>
+            </div>
+            <div id="theme-toggle" class="theme-toggle">
+                <svg class="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.93 19.07l1.41-1.41"></path><path d="M17.66 6.34l1.41-1.41"></path></svg>
+                <svg class="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </div>
+        </nav>
+    </header>
+    <main class="container">
+        <div id="blog-posts">
+            <!-- Blog posts will be dynamically inserted here -->
+        </div>
+    </main>
+    <script src="/flash-message.js" defer></script>
+    <script src="/script.js" defer></script>
+<footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>Verbius</h3>
+            <p>&copy; 2025 Verbius. All rights reserved.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Links</h3>
+            <ul>
+                <li><a href="/blogs">Home</a></li>
+                <li><a href="/editor">New Post</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Subscribe</h3>
+            <p>Get notified about new posts!</p>
+            <form id="subscription-form" class="subscription-form">
+                <label for="email-subscribe" class="sr-only">Email Address</label>
+                <input type="email" id="email-subscribe" placeholder="Your email address" required>
+                <button type="submit" class="button">Subscribe</button>
+            </form>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

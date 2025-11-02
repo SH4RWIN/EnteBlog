@@ -1,5 +1,3 @@
-# CORS (Cross-Origin Resource Sharing) Summary
-
 CORS is a browser-enforced security mechanism that restricts a website's JavaScript from making requests to a different "Origin" (protocol + domain + port). It exists to protect users from malicious sites trying to steal data from other servers (including local services).
 
 ## 1. What Causes a CORS Error?
