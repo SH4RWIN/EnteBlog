@@ -517,22 +517,21 @@ body.dark-mode .editor-toolbar .separator {
     border-right: 1px solid #555; /* Dark mode separator */
 }
 
+body.dark-mode .editor-toolbar {
+    background-color: #242424;
+    border-color: #333;
+}
+
 body.dark-mode .editor-toolbar button {
-    background-color: transparent !important; /* Remove background in dark mode */
-    color: #f0f0f0 !important;
+    background-color: transparent; /* Remove background in dark mode */
+    color: #f0f0f0;
     border: 1px solid transparent; /* Default transparent border */
 }
 
-body.dark-mode .editor-toolbar button:hover {
-    background-color: transparent !important;
-    border: 1px solid #f0f0f0 !important; /* White border on hover in dark mode */
-    color: #f0f0f0 !important;
-}
-
+body.dark-mode .editor-toolbar button:hover,
 body.dark-mode .editor-toolbar button.active {
-    background-color: transparent !important;
-    border: 1px solid #f0f0f0 !important; /* White border when active in dark mode */
-    color: #f0f0f0 !important;
+    background-color: #333;
+    border-color: #f0f0f0;
 }
 
 /* EasyMDE Preview Styling */
@@ -544,4 +543,14 @@ body.dark-mode .editor-toolbar button.active {
 body.dark-mode .editor-preview {
     background-color: #242424; /* Dark background for dark mode preview */
     color: #f0f0f0; /* Light Gray text for dark mode preview */
+}
+
+body.dark-mode .EasyMDE-fullscreen,
+body.dark-mode .EasyMDE-sided {
+    background-color: #242424;
+}
+
+body.dark-mode .editor-preview-side {
+    background-color: #242424;
+    color: #f0f0f0;
 }
