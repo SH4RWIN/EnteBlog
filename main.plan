@@ -1,0 +1,122 @@
+# Multi-User Blog Platform Implementation Plan
+
+This document outlines the strategy for evolving the current single-user, file-based blog into a robust multi-user platform with a database, user authentication, and distinct user roles.
+
+---
+
+### **Phase 1: Backend Foundation & Database Migration**
+
+The current file-based storage is not scalable for a multi-user system. The first and most critical step is to introduce a proper database and an Object-Relational Mapper (ORM) to manage data.
+
+**1. Technology Stack Update:**
+- **Database:** **PostgreSQL**. It's a powerful, open-source, and reliable relational database that is perfect for handling user and post relationships.
+- **ORM:** **Prisma**. It will provide a type-safe database client, schema management (migrations), and simplify database queries immensely.
+- **Authentication:** **Passport.js**. It's the standard for Node.js authentication, with a rich ecosystem of "strategies" for different authentication methods.
+- **Password Hashing:** **bcrypt.js**. To securely hash and salt user passwords.
+- **Session Management:** **express-session** with `connect-pg-simple` to store session data in the PostgreSQL database, ensuring users stay logged in across server restarts.
+
+**2. Database Schema Design:**
+We will define two primary models in our Prisma schema (`schema.prisma`):
+
+```prisma
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String   // Will be a hashed password
+  provider  String   @default("email") // "email" or "google"
+  googleId  String?  @unique
+  role      Role     @default(CLIENT)
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String   // The full Markdown content
+  isPublic  Boolean  @default(true) // Controls public/private visibility
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+}
+```
+
+**3. API Endpoint Redesign:**
+The existing API will be replaced with a new set of RESTful endpoints that are aware of user authentication and authorization.
+
+- **Authentication API (`/api/auth`):**
+  - `POST /register`: Create a new user with a hashed password.
+  - `POST /login`: Log in a user using email/password and create a session.
+  - `POST /logout`: Destroy the user's session.
+  - `GET /google`: Redirect to Google for OAuth authentication.
+  - `GET /google/callback`: Callback URL for Google to redirect to after authentication.
+  - `GET /me`: Returns the currently logged-in user's data.
+
+- **Posts API (`/api/posts`):**
+  - `GET /feed`: **(Public)** Get all posts where `isPublic` is `true`.
+  - `GET /`: **(Authenticated)** Get all posts for the currently logged-in user.
+  - `GET /:id`: **(Authenticated)** Get a single post. The logic will check if the user is the author OR if the post `isPublic`.
+  - `POST /`: **(Authenticated)** Create a new post, linked to the logged-in user.
+  - `PUT /:id`: **(Authenticated)** Update a post. **Authorization:** Must be the post's author.
+  - `DELETE /:id`: **(Authenticated)** Delete a post. **Authorization:** Must be the post's author or an ADMIN.
+
+---
+
+### **Phase 2: Frontend Implementation & User Experience**
+
+With the backend API in place, we will update the frontend to support the new features.
+
+**1. New Pages:**
+- **Login Page (`/login`):** A simple form with Email and Password fields, and a prominent "Login with Google" button.
+- **Register Page (`/register`):** A form for users to sign up with their name, email, and password.
+- **Feed Page (`/feed`):** A new page that displays all public posts from all users, fetched from the `GET /api/posts/feed` endpoint. The UI will be similar to the current dashboard.
+
+**2. Header & Navigation Updates:**
+- The main header will be dynamic.
+  - **Logged Out State:** Shows "Login" and "Register" links. The "MyBlog" logo will be renamed to "Verbius".
+  - **Logged In State:** Shows "My Dashboard", "Feed", and "Logout" links.
+
+**3. Editor Page (`/editor`) Enhancements:**
+- **Privacy Toggle:** A new UI element (e.g., a checkbox or switch) will be added to the editor form. This will allow the user to set the `isPublic` status of the blog post.
+- **Authentication Guard:** This page will be protected. If a user is not logged in, they will be redirected to the `/login` page.
+
+**4. Dashboard Page (`/dashboard`) Updates:**
+- This page will now fetch data from the authenticated `GET /api/posts` endpoint, showing only the posts created by the logged-in user.
+
+---
+
+### **Phase 3: Administrator Role & Features**
+
+Administrators will have special privileges to manage the platform.
+
+**1. Admin Identification:**
+- A user's role will be set to `ADMIN` directly in the database. This can be done manually at first.
+
+**2. Admin Dashboard (`/admin`):**
+- A new, protected page only accessible to users with the `ADMIN` role.
+- **Features:**
+  - **User Management:** Display a list of all users with the ability to delete them.
+  - **Content Management:** Display a list of all posts (both public and private) from all users, with the ability to view or delete any post.
+
+**3. Backend Authorization Middleware:**
+- A middleware function will be created to check `req.user.role`.
+- This middleware will protect the admin-only API endpoints (e.g., an endpoint to delete another user's post).
+
+This phased approach ensures a smooth transition from the current architecture to a scalable, secure, and feature-rich multi-user platform.
