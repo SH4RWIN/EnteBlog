@@ -1,6 +1,5 @@
 
-# Verbius (EnteBlog)
-
+# Verbius
 Lightweight blog/demo application containing a small backend and static frontend pages. This README describes the repository layout, how to run the app locally (Docker or node/python), and a dedicated screenshots section — drop screenshots into the `/screenshots` folder and they will be displayed here.
 
 ## Contents
