@@ -5,6 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const postContentHtml = document.getElementById('post-content-html'); // For rendered HTML
     const searchBar = document.getElementById('search-bar');
     const themeToggle = document.getElementById('theme-toggle');
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+
+    if (hamburgerMenu) {
+        hamburgerMenu.addEventListener('click', () => {
+            document.body.classList.toggle('nav-active');
+        });
+    }
 
     let allPosts = [];
 

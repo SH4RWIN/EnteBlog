@@ -332,8 +332,8 @@ app.get('/api/posts/:id', async (req, res) => {
 // POST /api/posts - Create a new post
 app.post('/api/posts', async (req, res) => {
     const { title, content, authorName, authorEmail } = req.body;
-    if (!title || !content || !authorName || !authorEmail) {
-        return res.status(400).json({ message: "Title, content, author name, and author email are required." });
+    if (!title || !content) {
+        return res.status(400).json({ message: "Title and content are required." });
     }
 
     const dirName = titleToDirname(title);
@@ -367,6 +367,9 @@ app.post('/api/posts', async (req, res) => {
 app.put('/api/posts/:id', async (req, res) => {
     const { id } = req.params;
     const { title, content, authorName, authorEmail } = req.body;
+    if (!title || !content) {
+        return res.status(400).json({ message: "Title and content are required." });
+    }
     const oldPostPath = path.join(POSTS_DIR, id);
 
     try {
