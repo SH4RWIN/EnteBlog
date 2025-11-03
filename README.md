@@ -71,30 +71,30 @@ Drop screenshots into a top-level `/screenshots` directory (create it if needed)
 
 Naming convention (suggested)
 
-- `screenshots/welcome.png` — Welcome / landing page
-- `screenshots/blogs.png` — Blogs / list page
-- `screenshots/editor.png` — Editor page
-- `screenshots/viewer.png` — Viewer / post page
-- `screenshots/flash-message.png` — Flash message component demo (optional)
+- `screenshots/Welcome.png` — Welcome / landing page
+- `screenshots/Blogs.png` — Blogs / list page
+- `screenshots/Editor.png` — Editor page
+- `screenshots/Viewer.png` — Viewer / post page
+- `screenshots/Flash-message.png` — Flash message component demo (optional)
 
 Add other screenshots using the pattern: `screenshots/<page-or-feature>.png`.
 
 Placeholders (these will show if you add the matching images):
 
 ### Welcome
-![Welcome page](screenshots/welcome.png)
+![Welcome page](screenshots/Welcome.png)
 
 ### Blogs (list)
-![Blogs page](screenshots/blogs.png)
+![Blogs page](screenshots/Blogs.png)
 
 ### Editor
-![Editor page](screenshots/editor.png)
+![Editor page](screenshots/Editor.png)
 
 ### Viewer (post)
-![Viewer page](screenshots/viewer.png)
+![Viewer page](screenshots/Viewer.png)
 
 ### Flash message / UI components
-![Flash message demo](screenshots/flash-message.png)
+![Flash message demo](screenshots/Flash-message.png)
 
 If you prefer other formats (jpg/webp), use that extension and update the filenames accordingly.
 
@@ -107,13 +107,3 @@ If you prefer other formats (jpg/webp), use that extension and update the filena
 
 1. Create an issue describing the change or improvement.
 2. Fork and submit a PR. Keep changes minimal and include tests where applicable.
-
-## Notes & next steps
-
-- Add your screenshots to `/screenshots` following the suggested names for them to appear above.
-- If you want, I can add a small script to auto-generate thumbnail previews or a `screenshots/README.md` to document each screenshot in more detail.
-
----
-
-If you'd like, tell me which extra pages you want included as screenshots (for example, any of the post entries under `posts/`), and I will add them to this README with suggested filenames.
-
