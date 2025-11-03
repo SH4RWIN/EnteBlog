@@ -93,10 +93,6 @@ Placeholders (these will show if you add the matching images):
 ### Viewer (post)
 ![Viewer page](screenshots/Viewer.png)
 
-### Flash message / UI components
-![Flash message demo](screenshots/Flash-message.png)
-
-If you prefer other formats (jpg/webp), use that extension and update the filenames accordingly.
 
 ## How the app is organized
 
